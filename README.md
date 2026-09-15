@@ -37,6 +37,10 @@ Instruction-swap check (`results/swap_test.mp4`): spawning the task-0 layout
 but instructing "blue sphere → right bin" sends the *right* arm after the
 blue sphere — the language token, not the scene, selects the arm/object.
 
+Paraphrase generalization: "place the red cube into the left bin please"
+(cosine sim 0.983 to the canonical instruction) scores **4/4** — the MiniLM
+conditioning accepts rephrased commands, not just the three training strings.
+
 ### Policy latency (50 calls, batch 1, full normalize→transformer→unnormalize graph)
 
 | Runtime / device | Latency | Policy rate |
@@ -112,7 +116,11 @@ python scripts/export_openvino.py --ckpt ckpt/act_lang --out ckpt/openvino
 
 # 6. closed-loop rollout executed by OpenVINO on Intel CPU / iGPU
 python scripts/deploy_openvino.py --device CPU --task 0 --video
-python scripts/deploy_openvino.py --device GPU --task 0
+python scripts/deploy_openvino.py --device GPU.0 --task 1 --video
+
+# 7. command-line front end (typed or Speechmatics voice)
+python scripts/voice_demo.py --text "put the green cylinder in the left bin" --video
+SPEECHMATICS_API_KEY=... python scripts/voice_demo.py --wav command.wav --video
 ```
 
 ## Repo layout
