@@ -1,0 +1,16 @@
+# Python 3.10
+mujoco==3.1.6
+--extra-index-url https://download.pytorch.org/whl/cu124
+torch==2.6.0
+torchvision==0.21.0
+# LeRobot pinned commit used for this project (lerobot-mujoco-tutorial lineage)
+lerobot @ git+https://github.com/huggingface/lerobot.git@fa0254efde81b2a15551e0d4e0c0f80a41961d1c
+transformers==4.50.3
+openvino>=2025.1
+onnx>=1.17
+onnxscript
+imageio[ffmpeg]
+av
+sentence-transformers
+einops
+safetensors

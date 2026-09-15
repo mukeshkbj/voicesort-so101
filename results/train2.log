@@ -1,0 +1,4 @@
+tasks: ['put the red cube in the left bin', 'put the blue sphere in the right bin', 'put the green cylinder in the left bin']
+step 0 loss 71.4679 (4s) {'l1_loss': 0.7799878716468811, 'kld_loss': 7.068793296813965}
+step 200 loss 2.0220 (116s) {'l1_loss': 0.38559308648109436, 'kld_loss': 0.16364310681819916}
+step 400 loss 1.1163 (228s) {'l1_loss': 0.1702914983034134, 'kld_loss': 0.09460243582725525}

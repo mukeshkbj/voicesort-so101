@@ -1,0 +1,22 @@
+{
+  "CPU": {
+    "latency_ms": 34.64,
+    "policy_hz": 28.9
+  },
+  "GPU.0": {
+    "latency_ms": 35.04,
+    "policy_hz": 28.5
+  },
+  "GPU.1": {
+    "latency_ms": 71.85,
+    "policy_hz": 13.9
+  },
+  "torch_cpu": {
+    "latency_ms": 98.78,
+    "policy_hz": 10.1
+  },
+  "torch_cuda": {
+    "latency_ms": 21.41,
+    "policy_hz": 46.7
+  }
+}

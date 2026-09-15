@@ -1,0 +1,82 @@
+<mujoco model="bimanual_sort">
+    <!-- VoiceSort: dual SO-101 bimanual sorting scene.
+         Custom scene built from scratch for the AI Infra Summit Hackathon (Intel Online track).
+         Arms: TheRobotStudio SO-101 MJCF (Apache-2.0), attached twice via MuJoCo <attach>.
+         All objects/bins are procedural geoms (no third-party assets, no licensing risk). -->
+    <compiler angle="radian" autolimits="true"/>
+    <option integrator="RK4" noslip_iterations="20" timestep="0.002"/>
+
+    <visual>
+        <headlight diffuse="0.6 0.6 0.6" ambient="0.3 0.3 0.3" specular="0 0 0"/>
+        <rgba haze="0.15 0.25 0.35 1"/>
+        <global azimuth="160" elevation="-20"/>
+    </visual>
+
+    <asset>
+        <texture type="skybox" builtin="gradient" rgb1="0.3 0.5 0.7" rgb2="0 0 0" width="512" height="3072"/>
+        <texture type="2d" name="groundplane" builtin="checker" mark="edge" rgb1="0.2 0.3 0.4" rgb2="0.1 0.2 0.3" markrgb="0.8 0.8 0.8" width="300" height="300"/>
+        <material name="groundplane" texture="groundplane" texuniform="true" texrepeat="5 5" reflectance="0.2"/>
+        <material name="table_mat" rgba="0.55 0.40 0.28 1"/>
+        <material name="table_leg_mat" rgba="0.30 0.30 0.32 1"/>
+        <material name="bin_left_mat" rgba="0.15 0.35 0.8 1"/>
+        <material name="bin_right_mat" rgba="0.8 0.25 0.15 1"/>
+        <model file="so101_arm.xml" name="so101"/>
+    </asset>
+
+    <worldbody>
+        <light pos="0 0 3.0" dir="0 0 -1" directional="true"/>
+        <light pos="0 -0.6 1.4" dir="0 0.4 -1" directional="false" diffuse="0.5 0.5 0.5"/>
+        <geom name="floor" size="0 0 0.05" pos="0 0 -0.55" type="plane" material="groundplane"/>
+
+        <!-- Table: 0.5m x 0.45m top, surface at z=0 -->
+        <body name="table" pos="0 0 -0.025">
+            <geom name="tabletop" type="box" size="0.25 0.225 0.025" material="table_mat" contype="1" conaffinity="1"/>
+            <geom name="table_leg" type="box" size="0.20 0.18 0.25" pos="0 0 -0.275" material="table_leg_mat" contype="0" conaffinity="0"/>
+        </body>
+
+        <!-- SO-101 local forward is +x; rotate mounts -90deg about z so arms face +y (workspace). -->
+        <body name="left_mount" pos="-0.16 -0.14 0" quat="0.707107 0 0 0.707107">
+            <geom name="left_mount_plate" type="cylinder" size="0.05 0.008" pos="0 0 -0.008" rgba="0.2 0.2 0.2 1"/>
+            <attach model="so101" body="base" prefix="left_"/>
+        </body>
+        <body name="right_mount" pos="0.16 -0.14 0" quat="0.707107 0 0 0.707107">
+            <geom name="right_mount_plate" type="cylinder" size="0.05 0.008" pos="0 0 -0.008" rgba="0.2 0.2 0.2 1"/>
+            <attach model="so101" body="base" prefix="right_"/>
+        </body>
+
+        <!-- Sortable objects (procedural geoms, free joints). Start poses set by env reset. -->
+        <body name="obj_red_cube" pos="-0.05 0.05 0.02">
+            <freejoint name="obj_red_cube_joint"/>
+            <geom name="obj_red_cube_geom" type="box" size="0.015 0.015 0.015" rgba="0.85 0.15 0.15 1" mass="0.03" condim="4" friction="1.0 0.05 0.01"/>
+        </body>
+        <body name="obj_blue_sphere" pos="0.0 0.09 0.018">
+            <freejoint name="obj_blue_sphere_joint"/>
+            <geom name="obj_blue_sphere_geom" type="sphere" size="0.018" rgba="0.15 0.35 0.85 1" mass="0.025" condim="4" friction="1.0 0.05 0.01"/>
+        </body>
+        <body name="obj_green_cyl" pos="0.05 0.05 0.02">
+            <freejoint name="obj_green_cyl_joint"/>
+            <geom name="obj_green_cyl_geom" type="cylinder" size="0.014 0.02" rgba="0.15 0.7 0.25 1" mass="0.03" condim="4" friction="1.0 0.05 0.01"/>
+        </body>
+
+        <!-- Sorting bins: shallow trays, left/right of workspace -->
+        <body name="bin_left" pos="-0.17 0.10 0">
+            <geom name="bin_left_floor" type="box" size="0.055 0.055 0.005" pos="0 0 0.005" material="bin_left_mat"/>
+            <geom name="bin_left_w1" type="box" size="0.055 0.003 0.022" pos="0 -0.052 0.022" material="bin_left_mat"/>
+            <geom name="bin_left_w2" type="box" size="0.055 0.003 0.022" pos="0 0.052 0.022" material="bin_left_mat"/>
+            <geom name="bin_left_w3" type="box" size="0.003 0.055 0.022" pos="-0.052 0 0.022" material="bin_left_mat"/>
+            <geom name="bin_left_w4" type="box" size="0.003 0.055 0.022" pos="0.052 0 0.022" material="bin_left_mat"/>
+            <site name="bin_left_site" pos="0 0 0.02" size="0.005" rgba="0 1 1 0.4"/>
+        </body>
+        <body name="bin_right" pos="0.17 0.10 0">
+            <geom name="bin_right_floor" type="box" size="0.055 0.055 0.005" pos="0 0 0.005" material="bin_right_mat"/>
+            <geom name="bin_right_w1" type="box" size="0.055 0.003 0.022" pos="0 -0.052 0.022" material="bin_right_mat"/>
+            <geom name="bin_right_w2" type="box" size="0.055 0.003 0.022" pos="0 0.052 0.022" material="bin_right_mat"/>
+            <geom name="bin_right_w3" type="box" size="0.003 0.055 0.022" pos="-0.052 0 0.022" material="bin_right_mat"/>
+            <geom name="bin_right_w4" type="box" size="0.003 0.055 0.022" pos="0.052 0 0.022" material="bin_right_mat"/>
+            <site name="bin_right_site" pos="0 0 0.02" size="0.005" rgba="1 0.5 0 0.4"/>
+        </body>
+
+        <!-- Scene camera: elevated rear-quarter view of the shared workspace -->
+        <camera name="overhead_cam" pos="0 -0.42 0.62" xyaxes="1 0 0 0 0.82 0.57" fovy="65"/>
+    </worldbody>
+</mujoco>

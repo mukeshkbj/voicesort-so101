@@ -1,0 +1,2 @@
+WARNING:root:Device 'None' is not available. Switching to 'cuda'.
+WARNING:root:'torchcodec' is not available in your platform, falling back to 'pyav' as a default decoder

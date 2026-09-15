@@ -1,0 +1,9 @@
+.venv/
+demo_data/
+ckpt/
+results/*.mp4
+results/*.npy
+__pycache__/
+ref-lerobot-mujoco-tutorial/
+ref-SO-ARM100/
+kernel.errors.txt

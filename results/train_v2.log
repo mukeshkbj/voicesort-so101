@@ -1,0 +1,20 @@
+WARNING:root:Device 'None' is not available. Switching to 'cuda'.
+tasks: ['put the red cube in the left bin', 'put the blue sphere in the right bin', 'put the green cylinder in the left bin']
+WARNING:root:'torchcodec' is not available in your platform, falling back to 'pyav' as a default decoder
+Downloading data:   0%|          | 0/115 [00:00<?, ?files/s]Downloading data: 100%|##########| 115/115 [00:00<00:00, 9582.50files/s]
+Generating train split: 0 examples [00:00, ? examples/s]Generating train split: 100 examples [00:00, 712.95 examples/s]Generating train split: 964 examples [00:00, 4537.77 examples/s]Generating train split: 1972 examples [00:00, 6434.74 examples/s]Generating train split: 2836 examples [00:00, 7170.61 examples/s]Generating train split: 3744 examples [00:00, 7734.28 examples/s]Generating train split: 4608 examples [00:00, 8011.01 examples/s]Generating train split: 5572 examples [00:00, 8170.55 examples/s]Generating train split: 6580 examples [00:00, 8406.05 examples/s]Generating train split: 7588 examples [00:01, 8562.04 examples/s]Generating train split: 8640 examples [00:01, 8795.81 examples/s]Generating train split: 10036 examples [00:01, 8510.35 examples/s]Generating train split: 11188 examples [00:01, 8697.83 examples/s]Generating train split: 12240 examples [00:01, 8837.82 examples/s]Generating train split: 13636 examples [00:01, 8644.36 examples/s]Generating train split: 14644 examples [00:01, 8731.90 examples/s]Generating train split: 15796 examples [00:01, 8851.89 examples/s]Generating train split: 16560 examples [00:02, 8171.98 examples/s]
+step 0 loss 58.2133 (3s) {'l1_loss': 0.6343737840652466, 'kld_loss': 5.757889270782471}
+step 200 loss 1.9820 (91s) {'l1_loss': 0.3293114900588989, 'kld_loss': 0.16527365148067474}
+step 400 loss 1.0132 (179s) {'l1_loss': 0.13939210772514343, 'kld_loss': 0.08738501369953156}
+step 600 loss 0.6971 (328s) {'l1_loss': 0.14537295699119568, 'kld_loss': 0.05517112463712692}
+step 800 loss 0.4499 (460s) {'l1_loss': 0.128603994846344, 'kld_loss': 0.03213109076023102}
+step 1000 loss 0.3383 (551s) {'l1_loss': 0.10941606014966965, 'kld_loss': 0.02288763038814068}
+step 1200 loss 0.2408 (643s) {'l1_loss': 0.08101722598075867, 'kld_loss': 0.01598057523369789}
+step 1400 loss 0.2287 (733s) {'l1_loss': 0.09640220552682877, 'kld_loss': 0.013228315860033035}
+step 1600 loss 0.1912 (823s) {'l1_loss': 0.07996530085802078, 'kld_loss': 0.011124392971396446}
+step 1800 loss 0.1655 (915s) {'l1_loss': 0.07274778187274933, 'kld_loss': 0.009270349517464638}
+step 2000 loss 0.1680 (1005s) {'l1_loss': 0.08407997339963913, 'kld_loss': 0.008392227813601494}
+step 2200 loss 0.1405 (1097s) {'l1_loss': 0.06332170963287354, 'kld_loss': 0.007718900218605995}
+step 2400 loss 0.1478 (1187s) {'l1_loss': 0.07932921499013901, 'kld_loss': 0.00685134157538414}
+step 2600 loss 0.1317 (1276s) {'l1_loss': 0.07123447954654694, 'kld_loss': 0.006045188754796982}
+step 2800 loss 0.0927 (1365s) {'l1_loss': 0.0451909564435482, 'kld_loss': 0.004745963960886002}
