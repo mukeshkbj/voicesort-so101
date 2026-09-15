@@ -1,7 +1,7 @@
 """Closed-loop rollout with the OpenVINO-compiled policy on Intel devices.
 
 This is the Intel-deployment evidence: the exported IR runs entirely on
-CPU (i9-13900K) and/or GPU (UHD 770) via OpenVINO -- no PyTorch in the loop.
+CPU (i9-13900K) and/or GPU (UHD 770) via OpenVINO; no PyTorch in the loop.
 The action-chunk queue mirrors select_action's n_action_steps behaviour.
 
 Usage:

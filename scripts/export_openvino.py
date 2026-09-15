@@ -7,7 +7,7 @@ observations and returns raw action chunks: exactly what the env needs.
 Outputs:
     ckpt/openvino/model_fp32.xml|.bin
     ckpt/openvino/model_fp16.xml|.bin
-    results/openvino_bench.json  -- latency on CPU / GPU (UHD 770) / CUDA ref
+    results/openvino_bench.json  (latency on CPU / GPU (UHD 770) / CUDA ref)
 """
 import os, sys, json, time, argparse
 import numpy as np

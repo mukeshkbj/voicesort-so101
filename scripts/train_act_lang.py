@@ -4,7 +4,7 @@ Language conditioning is injected through ACT's unused `observation.
 environment_state` slot: each frame's task_index maps to a frozen MiniLM
 embedding of its instruction string, so the transformer encoder sees a
 language token. Text is only needed at data-collection/inference time via the
-task table -- the policy itself runs on a fixed-size vector.
+task table; the policy itself runs on a fixed-size vector.
 """
 import os, sys, time, argparse
 import numpy as np

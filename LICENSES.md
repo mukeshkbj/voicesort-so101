@@ -5,7 +5,7 @@
 | Asset | Source | License | Notes |
 |-------|--------|---------|-------|
 | SO-101 arm MJCF + STL meshes (`scene/so101_arm.xml`, `scene/assets/`) | [TheRobotStudio/SO-ARM100](https://github.com/TheRobotStudio/SO-ARM100) | Apache-2.0 | Public robot model published by the arm's manufacturer for simulation use |
-| Tabletop, bins, primitive objects (cube/sphere/cylinder) | generated in `scene/bimanual_sort.xml` | n/a | Procedural MJCF primitives authored for this project — no external 3D assets, so no third-party licensing risk |
+| Tabletop, bins, primitive objects (cube/sphere/cylinder) | generated in `scene/bimanual_sort.xml` | n/a | Procedural MJCF primitives authored for this project; no external 3D assets, so no third-party licensing risk |
 
 No Sketchfab/CGTrader/Free3D assets were used; all scene geometry beyond the
 SO-101 arm is procedural MuJoCo primitives, which avoids license issues
@@ -26,6 +26,6 @@ entirely.
 
 ## Reference code
 
-- `ref-lerobot-mujoco-tutorial/` (jeongeun980906) — used as a reference for the
+- `ref-lerobot-mujoco-tutorial/` (jeongeun980906): used as a reference for the
   LeRobot dataset/training API; MIT license. Not vendored into the project.
-- `ref-SO-ARM100/` — reference clone of the upstream asset repo; Apache-2.0.
+- `ref-SO-ARM100/`: reference clone of the upstream asset repo; Apache-2.0.

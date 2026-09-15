@@ -1,6 +1,6 @@
 """Bimanual SO-101 sorting environment.
 
-Wraps the MuJoCo scene: state/actions are 14-dim (2 arms x 6 joints incl.
+Wraps the MuJoCo scene: state/actions are 12-dim (2 arms x 6 joints incl.
 grippers), observations are overhead + both wrist cameras. IK runs on a
 scratch MjData so planning never perturbs the live sim; execution is via the
 position actuators (real physics, real contacts).

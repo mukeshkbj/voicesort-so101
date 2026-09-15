@@ -1,13 +1,13 @@
 """Generate scripted demonstrations for bimanual sorting.
 
-Per episode: pick (object, bin) task from the language task table, choose the
-arm nearest the object, execute a waypoint sequence (approach/grasp/lift/
-carry/release/retreat). IK plans each waypoint on scratch data; the position
-actuators execute it under real physics so grasps/contacts are genuine.
-Frames (3 cams + 14-dim state + 14-dim action) are written to a LeRobot
+Per episode: pick (object, bin, arm) from the language task table, spawn the
+target object on the designated arm's side, execute a waypoint sequence
+(approach/grasp/lift/carry/release/retreat). IK plans each waypoint on
+scratch data; the position actuators execute it under real physics.
+Frames (3 cams + 12-dim state + 12-dim action) are written to a LeRobot
 dataset with the natural-language task string per episode.
 
-IK is used ONLY to script demonstrations -- the learned policy drives control
+IK is used ONLY to script demonstrations; the learned policy drives control
 at inference; no IK runs at deploy time.
 """
 import os, sys, time

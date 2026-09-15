@@ -1,26 +1,26 @@
-# VoiceSort — Language-Conditioned Bimanual SO-101 Manipulation in MuJoCo, deployed on Intel via OpenVINO
+# VoiceSort: language-conditioned bimanual SO-101 manipulation in MuJoCo, deployed on Intel via OpenVINO
 
-**AI Infra Summit Hackathon — Intel Online track submission.**
+**AI Infra Summit Hackathon, Intel Online track submission.**
 
 Two [SO-101](https://github.com/TheRobotStudio/SO-ARM100) robot arms sit at a
 table in a custom MuJoCo scene with three objects (red cube, blue sphere,
-green cylinder) and two bins. Given a natural-language instruction — *"put the
-red cube in the left bin"* — a language-conditioned **ACT** policy
-(vision-language-action) reads the overhead + both wrist cameras and the
-12-joint robot state, and drives both arms' position actuators closed-loop to
-pick the correct object and drop it in the correct bin.
+green cylinder) and two bins. Given a natural-language instruction like *"put
+the red cube in the left bin"*, a language-conditioned **ACT** policy
+(vision-language-action) reads the overhead and both wrist cameras plus the
+12-joint robot state, then drives both arms' position actuators closed-loop
+to pick the correct object and drop it in the correct bin.
 
-The policy is exported to **OpenVINO IR** and executed on Intel silicon:
-**i9-13900K CPU** and **UHD 770 iGPU**. No IK, no scripting, no GPU vendor
-lock-in at inference time.
+The policy is exported to **OpenVINO IR** and executed on Intel hardware:
+the **i9-13900K CPU** and the **UHD 770 iGPU**. At inference there is no IK
+and no scripting; the exported graph produces every action.
 
 ## Hardware manifest
 
 | Role | Device |
 |------|--------|
 | Training | NVIDIA RTX 4070 Ti (CUDA, PyTorch 2.6) |
-| Deployment (required) | Intel Core i9-13900K CPU — OpenVINO |
-| Deployment (accelerated) | Intel UHD 770 iGPU — OpenVINO |
+| Deployment (required) | Intel Core i9-13900K CPU, OpenVINO |
+| Deployment (accelerated) | Intel UHD 770 iGPU, OpenVINO |
 
 ## Results
 
@@ -29,31 +29,31 @@ lock-in at inference time.
 | Runtime | red→left | blue→right | green→left | total |
 |---|---|---|---|---|
 | PyTorch (RTX 4070 Ti, fp32) | 6/8 | 3/8 | 3/8 | **12/24 (50%)** |
-| OpenVINO FP32 — Intel CPU | 6/8 | 3/8 | 4/8 | **13/24 (54%)** |
-| OpenVINO FP16 — Intel CPU | 5/8 | 1/8 | 2/8 | 8/24 (33%) |
-| OpenVINO FP16 — UHD 770 iGPU | demo rollout: success | — | — | video: `results/ov_rollout_gpu.0_t1.mp4` |
+| OpenVINO FP32, Intel CPU | 6/8 | 3/8 | 4/8 | **13/24 (54%)** |
+| OpenVINO FP16, Intel CPU | 5/8 | 1/8 | 2/8 | 8/24 (33%) |
+| OpenVINO FP16, UHD 770 iGPU | demo rollout: success | — | — | video: `results/ov_rollout_gpu.0_t1.mp4` |
 
 Instruction-swap check (`results/swap_test.mp4`): spawning the task-0 layout
 but instructing "blue sphere → right bin" sends the *right* arm after the
-blue sphere — the language token, not the scene, selects the arm/object.
+blue sphere. The language token, not the scene, selects the arm and object.
 
 Paraphrase generalization: "place the red cube into the left bin please"
-(cosine sim 0.983 to the canonical instruction) scores **4/4** — the MiniLM
+(cosine sim 0.983 to the canonical instruction) scores **4/4**. The MiniLM
 conditioning accepts rephrased commands, not just the three training strings.
 
 ### Policy latency (50 calls, batch 1, full normalize→transformer→unnormalize graph)
 
 | Runtime / device | Latency | Policy rate |
 |---|---|---|
-| OpenVINO — CPU (i9-13900K) | 34.7 ms | 28.9 Hz |
-| OpenVINO — GPU.0 (UHD 770 iGPU) | 34.9 ms | 28.6 Hz |
-| OpenVINO — GPU.1 (RTX 4070 Ti via OpenCL) | 36.8 ms | 27.2 Hz |
-| PyTorch — CPU | 109.6 ms | 9.1 Hz |
-| PyTorch — CUDA (RTX 4070 Ti, ref) | 18.2 ms | 55.0 Hz |
+| OpenVINO, CPU (i9-13900K) | 34.7 ms | 28.9 Hz |
+| OpenVINO, GPU.0 (UHD 770 iGPU) | 34.9 ms | 28.6 Hz |
+| OpenVINO, GPU.1 (RTX 4070 Ti via OpenCL) | 36.8 ms | 27.2 Hz |
+| PyTorch, CPU | 109.6 ms | 9.1 Hz |
+| PyTorch, CUDA (RTX 4070 Ti, ref) | 18.2 ms | 55.0 Hz |
 
-**OpenVINO on the i9-13900K CPU runs the full VLA policy 3.2× faster than
-PyTorch CPU (28.9 vs 9.1 Hz)** and the UHD 770 iGPU matches it at 28.6 Hz —
-both well above the 20 Hz control loop.
+OpenVINO on the i9-13900K CPU runs the full VLA policy 3.2× faster than
+PyTorch CPU (28.9 vs 9.1 Hz), and the UHD 770 iGPU matches it at 28.6 Hz.
+Both sit well above the 20 Hz control loop.
 
 ## Pipeline
 
@@ -69,7 +69,7 @@ scripts/deploy_openvino.py  closed-loop rollout driven by OpenVINO runtime
 
 Each LeRobot episode stores its instruction string. At training time the
 string is embedded once with frozen `all-MiniLM-L6-v2` (384-d, semantic) and
-fed to ACT through its `observation.environment_state` input — an encoder
+fed to ACT through its `observation.environment_state` input, an encoder
 token (`FeatureType.ENV`, identity normalization). At inference the same
 embedding is computed from any instruction text, so the policy responds to
 rephrased commands, not just the three training strings. Ablate/verify with
@@ -77,18 +77,19 @@ the instruction-swap test in `eval_closedloop.py`.
 
 ### Data generation honesty notes
 
-- `env/bimanual_env.py::grasp_obj` uses a kinematic carry shortcut (object
-  attaches to the gripper once the closed gripper is within 5 cm) — a standard
-  scripted-demonstration trick used inside the data generator.
-- Eval/deploy rollouts use the matching `grasp_assist` abstraction: the
-  *policy* chooses when/where to close and open the gripper; the assist only
-  decides whether a close within 9 cm of the target object counts as a
-  successful pick. Arm control is 100% the learned policy; no IK runs at
+- `env/bimanual_env.py::grasp_obj` uses a kinematic carry shortcut (the
+  object attaches to the gripper once the closed gripper is within 5 cm).
+  This is a standard scripted-demonstration trick used inside the data
+  generator only.
+- Eval and deploy rollouts use the matching `grasp_assist` abstraction: the
+  *policy* chooses when and where to close and open the gripper; the assist
+  only decides whether a close within 9 cm of the target object counts as a
+  successful pick. Arm control is 100% the learned policy and no IK runs at
   inference. Finger-level contact grasping is a documented limitation.
 - Each task has a designated arm and its target object always spawns on that
-  arm's side, so arm selection is determined by the instruction embedding —
-  this mirrors a "designated worker" bimanual cell and removes a
-  vision-based arm-routing ambiguity the language token could not resolve.
+  arm's side, so arm selection comes from the instruction embedding. This
+  mirrors a "designated worker" bimanual cell and removes a vision-based
+  arm-routing ambiguity the language token could not resolve.
 
 ## Reproduce
 
@@ -99,7 +100,7 @@ pip install -r requirements.txt
 # 1. scene smoke test
 python scripts/smoke_scene.py
 
-# 2. dataset (~18 min, 120 attempts -> ~105 kept)
+# 2. dataset (~15 min, 120 attempts -> ~115 kept)
 python scripts/gen_demos.py 120
 
 # 3. train on CUDA GPU (~2-3h for 15-20k steps, batch 32)
@@ -125,19 +126,20 @@ SPEECHMATICS_API_KEY=... python scripts/voice_demo.py --wav command.wav --video
 
 ## Repo layout
 
-- `scene/` — MuJoCo MJCF: `bimanual_sort.xml` (dual-arm scene), `so101_arm.xml`
+- `scene/`: MuJoCo MJCF. `bimanual_sort.xml` (dual-arm scene), `so101_arm.xml`
   (arm model with wrist camera), `assets/` (SO-101 STLs, Apache-2.0)
-- `env/bimanual_env.py` — env wrapper: obs/action spec, seeded reset, success
-  check, scratch-data IK (data-gen only), kinematic carry (data-gen only)
-- `policy/text_embed.py` — MiniLM instruction embeddings
-- `scripts/` — pipeline scripts above
-- `results/` — logs, benchmark JSONs, rollout videos
-- `demo_data/` — generated LeRobot dataset (not committed)
-- `ckpt/` — checkpoints + OpenVINO IR (not committed; see release notes)
+- `env/bimanual_env.py`: env wrapper with obs/action spec, seeded reset,
+  success check, scratch-data IK (data-gen only), kinematic carry (data-gen
+  only)
+- `policy/text_embed.py`: MiniLM instruction embeddings
+- `scripts/`: pipeline scripts above
+- `results/`: logs, benchmark JSONs, rollout videos
+- `demo_data/`: generated LeRobot dataset (not committed)
+- `ckpt/`: checkpoints + OpenVINO IR (not committed; see release notes)
 
 ## Training notes
 
-The shipped checkpoint is `act_v2_step10000` — ~14k cumulative optimizer
+The shipped checkpoint is `act_v2_step10000`, about 14k cumulative optimizer
 steps (batch 32, lr 1e-4, chunk 50 / n_action_steps 20, ~2.5 h on the 4070 Ti
 including resume chunks). Success rate oscillates between checkpoints on
 this small dataset; `step10000` was selected by held-out-seed eval.
@@ -150,8 +152,8 @@ geometry is procedural MuJoCo primitives. Dependency licenses in
 
 ## Known limitations
 
-- Scripted demos use kinematic carry (see note above); the learned policy
-  must still physically track/act through contacts, which is the dominant
-  source of eval failures.
-- Task distribution is small (3 instructions); the language token is semantic
+- Scripted demos use kinematic carry (see note above). The learned policy
+  still has to track and act through contacts, which is the dominant source
+  of eval failures.
+- Task distribution is small (3 instructions). The language token is semantic
   but generalization is bounded by the task set.

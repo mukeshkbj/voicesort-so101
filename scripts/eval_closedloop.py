@@ -1,7 +1,7 @@
 """Closed-loop evaluation of the language-conditioned ACT policy in MuJoCo.
 
 Runs N seeded rollouts per instruction, policy drives all 12 joints through
-the position actuators -- no IK, no scripting at inference time. Records
+the position actuators; no IK, no scripting at inference time. Records
 overhead-cam videos and reports per-task success (object in target bin).
 
 Usage:

@@ -7,7 +7,7 @@ Modes:
   --device CPU|GPU.0                            OpenVINO device (default CPU)
 
 The transcript is parsed to (object, bin) by keyword rules; the raw
-instruction text is embedded with MiniLM and fed to the policy -- so
+instruction text is embedded with MiniLM and fed to the policy, so
 rephrased commands work too. Unrecognized commands are declined honestly.
 """
 import os, sys, json, argparse
