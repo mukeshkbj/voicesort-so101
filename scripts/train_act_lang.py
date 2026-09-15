@@ -44,6 +44,9 @@ def main():
     ap.add_argument("--lr", type=float, default=1e-4)
     ap.add_argument("--resume", default=None,
                     help="checkpoint dir to resume weights from")
+    ap.add_argument("--save_every", type=int, default=2000)
+    ap.add_argument("--step_offset", type=int, default=0,
+                    help="added to step for checkpoint naming (resumed runs)")
     args = ap.parse_args()
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -113,9 +116,10 @@ def main():
             if step % 200 == 0:
                 print(f"step {step} loss {loss.item():.4f} "
                       f"({time.time()-t0:.0f}s) {info}", flush=True)
-            if step % 5000 == 0 and step > 0:
-                policy.save_pretrained(f"{args.out}_step{step}")
-                print(f"checkpoint -> {args.out}_step{step}", flush=True)
+            if step % args.save_every == 0 and step > 0:
+                ck = f"{args.out}_step{step + args.step_offset}"
+                policy.save_pretrained(ck)
+                print(f"checkpoint -> {ck}", flush=True)
             step += 1
 
     policy.save_pretrained(args.out)

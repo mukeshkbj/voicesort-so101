@@ -1,22 +1,22 @@
 {
   "CPU": {
-    "latency_ms": 34.64,
+    "latency_ms": 34.66,
     "policy_hz": 28.9
   },
   "GPU.0": {
-    "latency_ms": 35.04,
-    "policy_hz": 28.5
+    "latency_ms": 34.93,
+    "policy_hz": 28.6
   },
   "GPU.1": {
-    "latency_ms": 71.85,
-    "policy_hz": 13.9
+    "latency_ms": 36.77,
+    "policy_hz": 27.2
   },
   "torch_cpu": {
-    "latency_ms": 98.78,
-    "policy_hz": 10.1
+    "latency_ms": 109.63,
+    "policy_hz": 9.1
   },
   "torch_cuda": {
-    "latency_ms": 21.41,
-    "policy_hz": 46.7
+    "latency_ms": 18.18,
+    "policy_hz": 55.0
   }
 }

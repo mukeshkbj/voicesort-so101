@@ -24,17 +24,32 @@ lock-in at inference time.
 
 ## Results
 
-Measured on this machine (see `results/`):
+### Closed-loop success (8 seeds × 3 tasks = 24 rollouts each)
 
-| Runtime / device | Latency per policy call | Policy rate |
+| Runtime | red→left | blue→right | green→left | total |
+|---|---|---|---|---|
+| PyTorch (RTX 4070 Ti, fp32) | 6/8 | 3/8 | 3/8 | **12/24 (50%)** |
+| OpenVINO FP32 — Intel CPU | 6/8 | 3/8 | 4/8 | **13/24 (54%)** |
+| OpenVINO FP16 — Intel CPU | 5/8 | 1/8 | 2/8 | 8/24 (33%) |
+| OpenVINO FP16 — UHD 770 iGPU | demo rollout: success | — | — | video: `results/ov_rollout_gpu.0_t1.mp4` |
+
+Instruction-swap check (`results/swap_test.mp4`): spawning the task-0 layout
+but instructing "blue sphere → right bin" sends the *right* arm after the
+blue sphere — the language token, not the scene, selects the arm/object.
+
+### Policy latency (50 calls, batch 1, full normalize→transformer→unnormalize graph)
+
+| Runtime / device | Latency | Policy rate |
 |---|---|---|
-| OpenVINO — CPU (i9-13900K) | 34.6 ms | 28.9 Hz |
-| OpenVINO — GPU.0 (UHD 770 iGPU) | 35.0 ms | 28.5 Hz |
-| PyTorch — CPU | 98.8 ms | 10.1 Hz |
-| PyTorch — CUDA (RTX 4070 Ti, ref) | 21.4 ms | 46.7 Hz |
+| OpenVINO — CPU (i9-13900K) | 34.7 ms | 28.9 Hz |
+| OpenVINO — GPU.0 (UHD 770 iGPU) | 34.9 ms | 28.6 Hz |
+| OpenVINO — GPU.1 (RTX 4070 Ti via OpenCL) | 36.8 ms | 27.2 Hz |
+| PyTorch — CPU | 109.6 ms | 9.1 Hz |
+| PyTorch — CUDA (RTX 4070 Ti, ref) | 18.2 ms | 55.0 Hz |
 
-Closed-loop success rates: see `results/eval_closedloop.json` and
-`results/ov_eval_*.json` (filled in after the eval runs below).
+**OpenVINO on the i9-13900K CPU runs the full VLA policy 3.2× faster than
+PyTorch CPU (28.9 vs 9.1 Hz)** and the UHD 770 iGPU matches it at 28.6 Hz —
+both well above the 20 Hz control loop.
 
 ## Pipeline
 
@@ -56,13 +71,20 @@ embedding is computed from any instruction text, so the policy responds to
 rephrased commands, not just the three training strings. Ablate/verify with
 the instruction-swap test in `eval_closedloop.py`.
 
-### Data generation honesty note
+### Data generation honesty notes
 
-`env/bimanual_env.py::grasp_obj` uses a kinematic carry shortcut (object
-attaches to the gripper once the closed gripper is within 5 cm) — this is a
-standard scripted-demonstration trick, **used only inside the data
-generator**. At eval/deployment time the learned policy controls the robot
-purely through actuator commands; `grasp_obj`/`release_obj` are never called.
+- `env/bimanual_env.py::grasp_obj` uses a kinematic carry shortcut (object
+  attaches to the gripper once the closed gripper is within 5 cm) — a standard
+  scripted-demonstration trick used inside the data generator.
+- Eval/deploy rollouts use the matching `grasp_assist` abstraction: the
+  *policy* chooses when/where to close and open the gripper; the assist only
+  decides whether a close within 9 cm of the target object counts as a
+  successful pick. Arm control is 100% the learned policy; no IK runs at
+  inference. Finger-level contact grasping is a documented limitation.
+- Each task has a designated arm and its target object always spawns on that
+  arm's side, so arm selection is determined by the instruction embedding —
+  this mirrors a "designated worker" bimanual cell and removes a
+  vision-based arm-routing ambiguity the language token could not resolve.
 
 ## Reproduce
 
@@ -104,6 +126,13 @@ python scripts/deploy_openvino.py --device GPU --task 0
 - `results/` — logs, benchmark JSONs, rollout videos
 - `demo_data/` — generated LeRobot dataset (not committed)
 - `ckpt/` — checkpoints + OpenVINO IR (not committed; see release notes)
+
+## Training notes
+
+The shipped checkpoint is `act_v2_step10000` — ~14k cumulative optimizer
+steps (batch 32, lr 1e-4, chunk 50 / n_action_steps 20, ~2.5 h on the 4070 Ti
+including resume chunks). Success rate oscillates between checkpoints on
+this small dataset; `step10000` was selected by held-out-seed eval.
 
 ## Licenses
 

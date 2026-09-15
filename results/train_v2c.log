@@ -1,0 +1,9 @@
+WARNING:root:Device 'None' is not available. Switching to 'cuda'.
+tasks: ['put the red cube in the left bin', 'put the blue sphere in the right bin', 'put the green cylinder in the left bin']
+Loading weights from local directory
+resumed weights from ckpt/act_v2_step12000
+WARNING:root:'torchcodec' is not available in your platform, falling back to 'pyav' as a default decoder
+step 0 loss 0.0274 (3s) {'l1_loss': 0.02668258175253868, 'kld_loss': 7.54818320274353e-05}
+step 200 loss 0.0347 (95s) {'l1_loss': 0.03410584107041359, 'kld_loss': 6.130430847406387e-05}
+step 400 loss 0.0328 (185s) {'l1_loss': 0.03207802027463913, 'kld_loss': 6.827432662248611e-05}
+step 600 loss 0.0328 (276s) {'l1_loss': 0.0318622887134552, 'kld_loss': 9.279511868953705e-05}

@@ -1,20 +1,30 @@
 WARNING:root:Device 'None' is not available. Switching to 'cuda'.
 tasks: ['put the red cube in the left bin', 'put the blue sphere in the right bin', 'put the green cylinder in the left bin']
 WARNING:root:'torchcodec' is not available in your platform, falling back to 'pyav' as a default decoder
-Downloading data:   0%|          | 0/115 [00:00<?, ?files/s]Downloading data: 100%|##########| 115/115 [00:00<00:00, 9582.50files/s]
-Generating train split: 0 examples [00:00, ? examples/s]Generating train split: 100 examples [00:00, 712.95 examples/s]Generating train split: 964 examples [00:00, 4537.77 examples/s]Generating train split: 1972 examples [00:00, 6434.74 examples/s]Generating train split: 2836 examples [00:00, 7170.61 examples/s]Generating train split: 3744 examples [00:00, 7734.28 examples/s]Generating train split: 4608 examples [00:00, 8011.01 examples/s]Generating train split: 5572 examples [00:00, 8170.55 examples/s]Generating train split: 6580 examples [00:00, 8406.05 examples/s]Generating train split: 7588 examples [00:01, 8562.04 examples/s]Generating train split: 8640 examples [00:01, 8795.81 examples/s]Generating train split: 10036 examples [00:01, 8510.35 examples/s]Generating train split: 11188 examples [00:01, 8697.83 examples/s]Generating train split: 12240 examples [00:01, 8837.82 examples/s]Generating train split: 13636 examples [00:01, 8644.36 examples/s]Generating train split: 14644 examples [00:01, 8731.90 examples/s]Generating train split: 15796 examples [00:01, 8851.89 examples/s]Generating train split: 16560 examples [00:02, 8171.98 examples/s]
-step 0 loss 58.2133 (3s) {'l1_loss': 0.6343737840652466, 'kld_loss': 5.757889270782471}
-step 200 loss 1.9820 (91s) {'l1_loss': 0.3293114900588989, 'kld_loss': 0.16527365148067474}
-step 400 loss 1.0132 (179s) {'l1_loss': 0.13939210772514343, 'kld_loss': 0.08738501369953156}
-step 600 loss 0.6971 (328s) {'l1_loss': 0.14537295699119568, 'kld_loss': 0.05517112463712692}
-step 800 loss 0.4499 (460s) {'l1_loss': 0.128603994846344, 'kld_loss': 0.03213109076023102}
-step 1000 loss 0.3383 (551s) {'l1_loss': 0.10941606014966965, 'kld_loss': 0.02288763038814068}
-step 1200 loss 0.2408 (643s) {'l1_loss': 0.08101722598075867, 'kld_loss': 0.01598057523369789}
-step 1400 loss 0.2287 (733s) {'l1_loss': 0.09640220552682877, 'kld_loss': 0.013228315860033035}
-step 1600 loss 0.1912 (823s) {'l1_loss': 0.07996530085802078, 'kld_loss': 0.011124392971396446}
-step 1800 loss 0.1655 (915s) {'l1_loss': 0.07274778187274933, 'kld_loss': 0.009270349517464638}
-step 2000 loss 0.1680 (1005s) {'l1_loss': 0.08407997339963913, 'kld_loss': 0.008392227813601494}
-step 2200 loss 0.1405 (1097s) {'l1_loss': 0.06332170963287354, 'kld_loss': 0.007718900218605995}
-step 2400 loss 0.1478 (1187s) {'l1_loss': 0.07932921499013901, 'kld_loss': 0.00685134157538414}
-step 2600 loss 0.1317 (1276s) {'l1_loss': 0.07123447954654694, 'kld_loss': 0.006045188754796982}
-step 2800 loss 0.0927 (1365s) {'l1_loss': 0.0451909564435482, 'kld_loss': 0.004745963960886002}
+step 0 loss 81.9757 (1s) {'l1_loss': 0.6700634360313416, 'kld_loss': 8.130563735961914}
+step 200 loss 2.0439 (91s) {'l1_loss': 0.3211018145084381, 'kld_loss': 0.17228026688098907}
+step 400 loss 1.1105 (180s) {'l1_loss': 0.13683293759822845, 'kld_loss': 0.09736662358045578}
+step 600 loss 0.6833 (267s) {'l1_loss': 0.14939109981060028, 'kld_loss': 0.053389400243759155}
+step 800 loss 0.4471 (356s) {'l1_loss': 0.11625750362873077, 'kld_loss': 0.03308223560452461}
+step 1000 loss 0.2839 (445s) {'l1_loss': 0.08077160269021988, 'kld_loss': 0.020309172570705414}
+step 1200 loss 0.2522 (535s) {'l1_loss': 0.0822712630033493, 'kld_loss': 0.016996528953313828}
+step 1400 loss 0.2062 (625s) {'l1_loss': 0.08578384667634964, 'kld_loss': 0.012040081433951855}
+step 1600 loss 0.1859 (715s) {'l1_loss': 0.07239595055580139, 'kld_loss': 0.011346926912665367}
+step 1800 loss 0.1630 (805s) {'l1_loss': 0.07320545613765717, 'kld_loss': 0.008982122875750065}
+step 2000 loss 0.1445 (895s) {'l1_loss': 0.06958246976137161, 'kld_loss': 0.007496410049498081}
+checkpoint -> ckpt/act_v2_step2000
+step 2200 loss 0.1392 (985s) {'l1_loss': 0.07133884727954865, 'kld_loss': 0.006784764118492603}
+step 2400 loss 0.1138 (1086s) {'l1_loss': 0.0574423111975193, 'kld_loss': 0.005633176304399967}
+step 2600 loss 0.1313 (1300s) {'l1_loss': 0.07767440378665924, 'kld_loss': 0.005363401025533676}
+step 2800 loss 0.0992 (1527s) {'l1_loss': 0.04913251847028732, 'kld_loss': 0.005010458640754223}
+step 3000 loss 0.1171 (1737s) {'l1_loss': 0.07347333431243896, 'kld_loss': 0.004364628344774246}
+step 3200 loss 0.1033 (1966s) {'l1_loss': 0.059401169419288635, 'kld_loss': 0.0043932367116212845}
+step 3400 loss 0.0887 (2177s) {'l1_loss': 0.05415692180395126, 'kld_loss': 0.0034581655636429787}
+step 3600 loss 0.0802 (2385s) {'l1_loss': 0.045693784952163696, 'kld_loss': 0.003445821814239025}
+step 3800 loss 0.0911 (2598s) {'l1_loss': 0.05923830717802048, 'kld_loss': 0.0031856708228588104}
+step 4000 loss 0.0804 (2821s) {'l1_loss': 0.057106293737888336, 'kld_loss': 0.0023275455459952354}
+checkpoint -> ckpt/act_v2_step4000
+step 4200 loss 0.0678 (3032s) {'l1_loss': 0.045877449214458466, 'kld_loss': 0.002191598527133465}
+step 4400 loss 0.0602 (3244s) {'l1_loss': 0.036238785833120346, 'kld_loss': 0.002393939532339573}
+step 4600 loss 0.0595 (3468s) {'l1_loss': 0.04042992368340492, 'kld_loss': 0.0019087577238678932}
+step 4800 loss 0.0730 (3593s) {'l1_loss': 0.05151360481977463, 'kld_loss': 0.0021520406007766724}
