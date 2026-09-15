@@ -33,14 +33,15 @@ def transcribe(wav_path):
     if not key:
         raise RuntimeError("SPEECHMATICS_API_KEY not set")
     from speechmatics.batch_client import BatchClient
-    from speechmatics.models import BatchTranscriptionConfig
-    with BatchClient(api_key=key,
-                     url="https://asr.api.speechmatics.com/v2") as client:
-        job = client.submit_job(wav_path,
-                                transcription_config=BatchTranscriptionConfig(
-                                    language="en"))
-        return client.wait_for_completion(job["id"])\
-            ["transcript"]["text"]
+    from speechmatics.models import (BatchTranscriptionConfig,
+                                     ConnectionSettings)
+    settings = ConnectionSettings(
+        url="https://asr.api.speechmatics.com/v2", auth_token=key)
+    with BatchClient(settings) as client:
+        job_id = client.submit_job(
+            wav_path,
+            transcription_config=BatchTranscriptionConfig(language="en"))
+        return client.wait_for_completion(job_id, transcription_format="txt")
 
 
 def parse_command(text):
