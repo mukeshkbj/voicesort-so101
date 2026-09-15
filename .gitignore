@@ -7,3 +7,4 @@ __pycache__/
 ref-lerobot-mujoco-tutorial/
 ref-SO-ARM100/
 kernel.errors.txt
+dist/

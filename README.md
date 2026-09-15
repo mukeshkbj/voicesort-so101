@@ -134,8 +134,10 @@ SPEECHMATICS_API_KEY=... python scripts/voice_demo.py --wav command.wav --video
 - `policy/text_embed.py`: MiniLM instruction embeddings
 - `scripts/`: pipeline scripts above
 - `results/`: logs, benchmark JSONs, rollout videos
-- `demo_data/`: generated LeRobot dataset (not committed)
-- `ckpt/`: checkpoints + OpenVINO IR (not committed; see release notes)
+- `demo_data/`: generated LeRobot dataset (not committed; zip in the
+  [v1.0 release](https://github.com/mukeshkbj/voicesort-so101/releases/tag/v1.0))
+- `ckpt/`: checkpoints + OpenVINO IR (not committed; zips in the
+  [v1.0 release](https://github.com/mukeshkbj/voicesort-so101/releases/tag/v1.0))
 
 ## Training notes
 
